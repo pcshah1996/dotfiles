@@ -1,0 +1,23 @@
+[user]
+	name = Prateek Shah
+	email = pcshah1996@gmail.com
+[core]
+	editor = vim
+#[commit]
+#	template = /Users/prateek/.gitmessage.txt
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+[difftool "vimdiff"]
+	cmd = vim -f -d -c \"wincmd l\" -c 'cd \"$GIT_PREFIX\"' \"$LOCAL\" \"$REMOTE\"
+[merge]
+tool = mymeld
+[mergetool "mymeld"]
+cmd = meld --diff $BASE $LOCAL --diff $BASE $REMOTE --diff $LOCAL $MERGED $REMOTE
+[push]
+	default = current
+[pull]
+  default = current
