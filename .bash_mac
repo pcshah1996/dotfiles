@@ -1,0 +1,182 @@
+export CLICOLOR=1
+#export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+
+# Homebrew tab completion
+# source $(brew --repository)/Library/Contributions/brew_bash_completion.sh
+
+# Personal bin directory
+export PATH=~/bin:$PATH
+
+# -i for safe file management
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+# General shortcuts
+alias mkdir='mkdir -p'
+alias h='history'
+alias j='jobs -l'
+alias refreshbash='. .bash_profile'
+alias clc='clear'
+alias javacall='javac *.java'
+alias checkstyle='checkstyle -a'
+alias cstyle='checkstyle'
+alias cstyleall='cstyle *.java'
+
+# Finder
+alias finder='open -R ./'       # Open finder window in current directory
+alias finderShowHidden='defaults write com.apple.finder ShowAllFiles TRUE'
+alias finderHideHidden='defaults write com.apple.finder ShowAllFiles FALSE'
+
+# Disk Utility shortcuts
+alias dkls='diskutil list'
+alias dkej='diskutil eject'
+
+# Directory navigation
+alias ..='cd ../'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias dl='cd ~/Downloads'
+alias docs='cd ~/Documents'
+alias ~~='cd ~'
+alias bin='cd ~/bin'
+alias tojava='cd src/main/java'
+
+# Disk space utils
+alias du='du -kh'
+alias df='df -kTh'
+
+# ls shortcuts
+alias lk='ls -lSr'
+alias lt='ls -ltr'
+alias lc='ls -ltcr'
+alias lu='ls -ltur'
+alias ll='ls -la'
+alias la='ls -aC'
+alias dev='ll /dev'
+
+alias less='less -FSRXc'
+
+# Network
+alias myip='curl ip.appspot.com'                  # Public facing IP Address
+alias netCons='lsof -i'                           # Show all open TCP/IP sockets
+alias flushDNS='dscacheutil -flushcache'          # Flush out the DNS Cache
+alias lsock='sudo /usr/sbin/lsof -i -P'           # Display open sockets
+alias lsockU='sudo /usr/sbin/lsof -nP | grep UDP' # Display open UDP sockets
+alias lsockT='sudo /usr/sbin/lsof -nP | grep TCP' # Display open TCP sockets
+alias ipInfo0='ipconfig getpacket en0'       # Get info on connections for en0
+alias ipInfo1='ipconfig getpacket en1'       # Get info on connections for en1
+alias openPorts='sudo lsof -i | grep LISTEN' # All listening connections
+alias showBlocked='sudo ipfw list'           # All ipfw rules inc/blocked IPs
+
+# App opening shortcuts
+alias preview='open -a /Applications/Preview.app'
+alias atom='open -a /Applications/Atom.app'
+
+# Cleanups
+alias cleanupDS="find . -type f -name '*.DS_Store' -ls -delete"
+alias cleanupLS="/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister -kill -r -domain local -domain system -domain user && killall Finder"
+
+#-------------------------------------------------------------------------------
+# Functions
+#-------------------------------------------------------------------------------
+
+up() { # Moving up directory tree the specified amount
+  local d=""
+  limit=$1
+  for ((i=1 ; i <= limit ; i++))
+    do
+      d=$d/..
+    done
+  d=$(echo $d | sed 's/^\///')
+  if [ -z "$d" ]; then
+    d=..
+  fi
+  cd $d
+}
+
+#sudo() { # do sudo, or sudo !!
+#    if [[ $# == 0 ]]; then
+#    	sudo $(history -p '!!')
+#    else
+#    	sudo "$@"
+#    fi
+#}
+
+# If you don't have the necessary package, find it on homebrew
+extract () { # Compressed file extract tool
+   if [ -f $1 ] ; then
+       case $1 in
+           *.tar.bz2)   tar xvjf $1    ;;
+           *.tar.gz)    tar xvzf $1    ;;
+           *.bz2)       bunzip2 $1     ;;
+           *.rar)       unrar x $1     ;;
+           *.gz)        gunzip $1      ;;
+           *.tar)       tar xvf $1     ;;
+           *.tbz2)      tar xvjf $1    ;;
+           *.tgz)       tar xvzf $1    ;;
+           *.zip)       unzip $1       ;;
+           *.Z)         uncompress $1  ;;
+           *.7z)        7z x $1        ;;
+           *)           echo "don't know how to extract '$1'..." ;;
+       esac
+   else
+       echo "'$1' is not a valid file!"
+   fi
+}
+
+gppc () { # Quick gcc compilation for c++
+    file=$1
+    newFile=${file%.*p}.o
+    g++ $file -o $newFile
+    # C, cc, cxx, cpp, c++
+}
+
+ej () { # Disk ejection tool
+    diskutil eject $@
+}
+
+trash () { # moves files to trash
+command mv "$@" ~/.Trash ;
+}
+
+mcd () { # Makes new Dir and jumps inside
+mkdir -p "$1" && cd "$1";
+}
+
+export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
+[ -r /Users/prateekshah/.bashrc ] && source /Users/prateekshah/.bashrc
+[[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm" # Load RVM into a shell session *as a function*
+
+
+alias checkstyle="java -jar '/Users/prateekshah/Documents/Georgia Tech/Semester2/CS1332/checkstyle.jar' -c '/Users/prateekshah/Documents/Georgia Tech/Semester2/CS1332/checkstyle.xml'"
+alias school="cd ~/Documents/Georgia\ Tech/Semester3/"
+alias weather="curl http://wttr.in/"
+alias smartcities="ssh pshah@city-data.gtri.gatech.edu"
+alias safeharbor="ssh prateek@23.97.25.39"
+alias socksset='sudo networksetup -setsocksfirewallproxy Wi-Fi localhost 5000'
+#alias sockson='sudo networksetup -setsocksfirewallproxystate Wi-Fi on'
+#alias socksoff='sudo networksetup -setsocksfirewallproxystate Wi-Fi off'
+alias lines='fortune | cowsay | lolcat -a'
+alias wisdom='fortune | tee >(say)'
+alias bypass='sockson && (ssh -v  -D 5000 -N prateekshah@prateekNetwork.jumpingcrab.com ; socksoff)'
+
+
+update() {
+    git add -A
+    git commit -m $1
+    git push
+}
+
+alias log="keylogger ~/.strokes.txt &>/dev/null &"
+alias openlog="open ~/.strokes.txt"
+alias killlog="kill `pgrep keylogger`"
+alias jump="cd ~/Documents/Georgia\ Tech/Semester3"
+
+if [ -f /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-completion.bash ]; then
+    . /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-completion.bash
+fi
+
+source /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
+
+PS1="\[\033[32m\]\! \[\033[33m\]\w\$(__git_ps1 \" (\[\033[36m\]%s\[\033[33m\])\") \n\$\[\033[0m\] "
