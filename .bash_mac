@@ -150,7 +150,7 @@ export PATH="/opt/local/bin:/opt/local/sbin:$PATH"
 
 
 alias checkstyle="java -jar '/Users/prateekshah/Documents/Georgia Tech/Semester2/CS1332/checkstyle.jar' -c '/Users/prateekshah/Documents/Georgia Tech/Semester2/CS1332/checkstyle.xml'"
-alias school="cd ~/Documents/Georgia\ Tech/Semester3/"
+alias school="cd /Users/prateek/Documents/College/Semester5/"
 alias weather="curl http://wttr.in/"
 alias smartcities="ssh pshah@city-data.gtri.gatech.edu"
 alias safeharbor="ssh prateek@23.97.25.39"
@@ -160,7 +160,7 @@ alias socksset='sudo networksetup -setsocksfirewallproxy Wi-Fi localhost 5000'
 alias lines='fortune | cowsay | lolcat -a'
 alias wisdom='fortune | tee >(say)'
 alias bypass='sockson && (ssh -v  -D 5000 -N prateekshah@prateekNetwork.jumpingcrab.com ; socksoff)'
-
+alias pdf='xelatex'
 
 update() {
     git add -A
@@ -180,3 +180,8 @@ fi
 source /Applications/Xcode.app/Contents/Developer/usr/share/git-core/git-prompt.sh
 
 PS1="\[\033[32m\]\! \[\033[33m\]\w\$(__git_ps1 \" (\[\033[36m\]%s\[\033[33m\])\") \n\$\[\033[0m\] "
+
+# Setting PATH for Python 2.7
+# The original version is saved in .bash_profile.pysave
+PATH="/Library/Frameworks/Python.framework/Versions/2.7/bin:${PATH}"
+export PATH
